@@ -26,14 +26,5 @@ public class ProjectApplication {
         return new BCryptPasswordEncoder();
     }
 
-    //Setup kho chứa trên firebase
-    @Bean
-    public Storage storage() throws IOException
-    {
-        InputStream inputStream = new ClassPathResource("firebase-config.json").getInputStream();
-        return StorageOptions.newBuilder()
-                .setCredentials(GoogleCredentials.fromStream(inputStream))
-                .build()
-                .getService();
-    }
+
 }

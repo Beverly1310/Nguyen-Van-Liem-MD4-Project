@@ -21,7 +21,7 @@ public class Orders {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "serial_number", length = 100, unique = true, nullable = false)
+    @Column(name = "serial_number", length = 100, unique = true)
     private String serialNumber;
     @Column(name = "total_price", columnDefinition = "DECIMAL(10,2)")
     private Double totalPrice;

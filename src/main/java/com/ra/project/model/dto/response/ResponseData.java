@@ -1,4 +1,4 @@
-package com.ra.project.model.dto.resonse;
+package com.ra.project.model.dto.response;
 
 
 import lombok.AllArgsConstructor;
