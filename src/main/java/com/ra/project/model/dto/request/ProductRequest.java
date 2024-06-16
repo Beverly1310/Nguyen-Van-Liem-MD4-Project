@@ -1,7 +1,7 @@
-package com.ra.project.model.entity;
+package com.ra.project.model.dto.request;
 
+import com.ra.project.model.entity.Category;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -16,18 +16,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Entity
-@Table(name = "product")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
+public class ProductRequest {
     private Long id;
-    @Column(name = "sku",length = 100)
-    private String sku= UUID.randomUUID().toString();
     @Column(name = "product_name",length = 100)
+    @NotBlank
+    @NotEmpty
     private String productName;
     @Column(name = "description")
+    @Lob
     private String description;
     @Column(name = "unit_price", columnDefinition = "DECIMAL(10,2)")
     private Double unitPrice;
@@ -36,13 +32,5 @@ public class Product {
     private int stockQuantity;
     @Column(name = "image")
     private String image;
-    @Column(name = "created_at", columnDefinition = "DATE")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createdAt=new Date();
-    @Column(name = "updated_at", columnDefinition = "DATE")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updatedAt=new Date();
-    @ManyToOne
-    @JoinColumn(name = "category_id",referencedColumnName = "category_id")
-    private Category category;
+    private Long categoryId;
 }

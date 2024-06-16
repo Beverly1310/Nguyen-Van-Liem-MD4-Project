@@ -28,7 +28,7 @@ public class ProductController {
                                                                    @RequestParam("size") Integer size,
                                                                    @RequestParam("orderBy") String orderBy,
                                                                    @RequestParam("direction") String direction) {
-        List<Product> products = productService.getProducts(page, size, orderBy, direction);
+        List<Product> products = productService.getProducts(page, size, orderBy, direction).getContent();
         return new ResponseEntity<>(new ResponseData<>("success", products, HttpStatus.OK), HttpStatus.OK);
     }
 
