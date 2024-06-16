@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -15,4 +17,10 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
+
+    @Override
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Category not found"));
+    }
+
 }

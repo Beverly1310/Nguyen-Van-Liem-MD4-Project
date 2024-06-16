@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
         if(orderBy!=null && !orderBy.isEmpty()){
             // co sap xep
             Sort sort = null;
-            switch (direction){
+            switch (direction.toUpperCase().trim()){
                 case "ASC":
                     sort = Sort.by(orderBy).ascending();
                     break;
