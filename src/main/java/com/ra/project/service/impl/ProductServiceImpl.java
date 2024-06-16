@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts(Integer page, Integer size, String orderBy,String direction) {
+    public Page<Product> getProducts(Integer page, Integer size, String orderBy,String direction) {
         Pageable pageable = null;
 
         if(orderBy!=null && !orderBy.isEmpty()){
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
             //khong sap xep
             pageable = PageRequest.of(page-1, size);
         }
-        return productRepository.getAll(pageable).getContent();
+        return productRepository.getAllSale(pageable);
     }
 
     @Override

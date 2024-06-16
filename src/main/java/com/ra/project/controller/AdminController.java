@@ -1,6 +1,7 @@
 package com.ra.project.controller;
 
 import com.ra.project.model.dto.response.ResponseData;
+import com.ra.project.model.entity.Product;
 import com.ra.project.model.entity.Role;
 import com.ra.project.model.entity.User;
 import com.ra.project.service.AdminService;
@@ -21,7 +22,7 @@ public class AdminController {
                                                                 @RequestParam("size") Integer size,
                                                                 @RequestParam("orderBy") String orderBy,
                                                                 @RequestParam("direction") String direction) {
-        List<User> users = adminService.getUserWithPagingAndSorting(page, size, orderBy, direction);
+        List<User> users = adminService.getUserWithPagingAndSorting(page, size, orderBy, direction).getContent();
         return new ResponseEntity<>(new ResponseData<>("success",users, HttpStatus.OK), HttpStatus.OK);
     }
     @PostMapping("/users/{userId}")
@@ -38,5 +39,17 @@ public class AdminController {
     public ResponseEntity<ResponseData<List<User>>> getUserByFullName(@RequestParam("fullName") String fullName) {
         List<User> users = adminService.getUserByFullName(fullName);
         return new ResponseEntity<>(new ResponseData<>("success",users, HttpStatus.OK), HttpStatus.OK);
+    }
+    @GetMapping("/products")
+    public ResponseEntity<ResponseData<List<Product>>> getAllProducts(@RequestParam("page") Integer page,
+                                                                      @RequestParam("size") Integer size,
+                                                                      @RequestParam("orderBy") String orderBy,
+                                                                      @RequestParam("direction") String direction) {
+        List<Product> products = adminService.getProductWithPagingAndSorting(page,size,orderBy,direction).getContent();
+        return new ResponseEntity<>(new ResponseData<>("success",products, HttpStatus.OK), HttpStatus.OK);
+    }
+    @GetMapping("//products/{productId}")
+    public ResponseEntity<ResponseData<Product>> getProductById(@PathVariable("productId") Long productId) {
+
     }
 }
