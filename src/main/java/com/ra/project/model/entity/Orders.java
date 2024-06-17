@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +23,7 @@ public class Orders {
     private Long orderId;
 
     @Column(name = "serial_number", length = 100, unique = true)
-    private String serialNumber;
+    private String serialNumber= UUID.randomUUID().toString();
     @Column(name = "total_price", columnDefinition = "DECIMAL(10,2)")
     private Double totalPrice;
     @Enumerated(EnumType.STRING)

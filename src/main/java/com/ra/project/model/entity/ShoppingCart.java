@@ -17,7 +17,7 @@ public class ShoppingCart {
     private Long id;
     @Column(name = "order_quantity")
     @Min(0)
-    private int orderQuantity;
+    private Long orderQuantity;
     @ManyToOne
     @JoinColumn(name = "product_id",referencedColumnName = "product_id")
     private Product product;

@@ -33,7 +33,7 @@ public class Product {
     private Double unitPrice;
     @Column(name = "stock_quantity")
     @Min(1)
-    private int stockQuantity;
+    private Long stockQuantity;
     @Column(name = "image")
     private String image;
     @Column(name = "created_at", columnDefinition = "DATE")

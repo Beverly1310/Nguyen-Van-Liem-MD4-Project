@@ -24,5 +24,5 @@ public class OrderDetail {
     private Double unitPrice;
     @Column(name = "order_quantity")
     @Min(0)
-    private Integer orderQuantity;
+    private Long orderQuantity;
 }

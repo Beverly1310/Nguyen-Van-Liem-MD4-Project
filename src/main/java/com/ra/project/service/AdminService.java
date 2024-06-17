@@ -2,10 +2,7 @@ package com.ra.project.service;
 
 import com.ra.project.model.dto.request.CategoryRequest;
 import com.ra.project.model.dto.request.ProductRequest;
-import com.ra.project.model.entity.Category;
-import com.ra.project.model.entity.Product;
-import com.ra.project.model.entity.Role;
-import com.ra.project.model.entity.User;
+import com.ra.project.model.entity.*;
 import org.springframework.data.domain.Page;
 import java.util.List;
 
@@ -22,4 +19,8 @@ public interface AdminService {
     Category getCategory(Long id);
     Category addOrEditCategory(CategoryRequest categoryRequest, Long id);
     void deleteCategory(Long categoryId);
+    List<Orders> getOrders();
+    List<Orders> getOrdersByStatus(String status);
+    List<OrderDetail> getOrderDetails(Long orderId);
+    Orders changeOrderStatus(Long orderId,String status);
 }

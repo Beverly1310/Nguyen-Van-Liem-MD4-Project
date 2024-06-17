@@ -1,14 +1,13 @@
 package com.ra.project.controller;
 
+import com.ra.project.model.cons.OrderStatus;
 import com.ra.project.model.dto.request.CategoryRequest;
 import com.ra.project.model.dto.request.ProductRequest;
 import com.ra.project.model.dto.response.ResponseData;
-import com.ra.project.model.entity.Category;
-import com.ra.project.model.entity.Product;
-import com.ra.project.model.entity.Role;
-import com.ra.project.model.entity.User;
+import com.ra.project.model.entity.*;
 import com.ra.project.service.AdminService;
 import com.ra.project.service.CategoryService;
+import jakarta.persistence.criteria.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,32 +80,61 @@ public class AdminController {
         adminService.deleteProduct(productId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @GetMapping("/categories")
     public ResponseEntity<ResponseData<List<Category>>> getAllCategories(@RequestParam("page") Integer page,
                                                                          @RequestParam("size") Integer size,
                                                                          @RequestParam("orderBy") String orderBy,
                                                                          @RequestParam("direction") String direction) {
-     List<Category> categories = adminService.getCategories(page, size, orderBy, direction).getContent();
-     return new ResponseEntity<>(new ResponseData<>("success", categories, HttpStatus.OK), HttpStatus.OK);
+        List<Category> categories = adminService.getCategories(page, size, orderBy, direction).getContent();
+        return new ResponseEntity<>(new ResponseData<>("success", categories, HttpStatus.OK), HttpStatus.OK);
     }
+
     @GetMapping("/categories/{categoryId}")
     public ResponseEntity<ResponseData<Category>> getCategoryById(@PathVariable("categoryId") Long categoryId) {
         Category category = adminService.getCategory(categoryId);
         return new ResponseEntity<>(new ResponseData<>("success", category, HttpStatus.OK), HttpStatus.OK);
     }
+
     @PutMapping("/categories")
     public ResponseEntity<ResponseData<Category>> addCategory(@RequestBody CategoryRequest categoryRequest) {
-        Category category = adminService.addOrEditCategory(categoryRequest,null);
+        Category category = adminService.addOrEditCategory(categoryRequest, null);
         return new ResponseEntity<>(new ResponseData<>("success", category, HttpStatus.OK), HttpStatus.OK);
     }
+
     @PutMapping("/categories/{categoryId}")
     public ResponseEntity<ResponseData<Category>> editCategory(@RequestBody CategoryRequest categoryRequest, @PathVariable("categoryId") Long categoryId) {
         Category category = adminService.addOrEditCategory(categoryRequest, categoryId);
         return new ResponseEntity<>(new ResponseData<>("success", category, HttpStatus.OK), HttpStatus.OK);
     }
+
     @PostMapping("/categories/{categoryId}")
     public ResponseEntity<?> deleteCategory(@PathVariable("categoryId") Long categoryId) {
         adminService.deleteCategory(categoryId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<ResponseData<List<Orders>>> getAllOrders() {
+        List<Orders> orders = adminService.getOrders();
+        return new ResponseEntity<>(new ResponseData<>("success", orders, HttpStatus.OK), HttpStatus.OK);
+    }
+
+    @GetMapping("/orders/{orderStatus}")
+    public ResponseEntity<ResponseData<List<Orders>>> getOrdersByStatus(@PathVariable("orderStatus") String orderStatus) {
+        List<Orders> ordersByStatus = adminService.getOrdersByStatus(orderStatus);
+        return new ResponseEntity<>(new ResponseData<>("success", ordersByStatus, HttpStatus.OK), HttpStatus.OK);
+    }
+
+    @GetMapping("/orders/detail/{orderId}")
+    public ResponseEntity<ResponseData<List<OrderDetail>>> getOrderDetail(@PathVariable("orderId") Long orderId) {
+        List<OrderDetail> orderDetails = adminService.getOrderDetails(orderId);
+        return new ResponseEntity<>(new ResponseData<>("success", orderDetails, HttpStatus.OK), HttpStatus.OK);
+    }
+
+    @PostMapping("/orders/{orderId}/status")
+    public ResponseEntity<ResponseData<Orders>> changeOrderStatus(@PathVariable("orderId") Long orderId, @RequestParam("status") String status) {
+        Orders order = adminService.changeOrderStatus(orderId, status);
+        return new ResponseEntity<>(new ResponseData<>("success", order, HttpStatus.OK), HttpStatus.OK);
     }
 }

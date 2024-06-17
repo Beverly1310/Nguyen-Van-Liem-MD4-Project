@@ -1,15 +1,10 @@
 package com.ra.project.service.impl;
 
+import com.ra.project.model.cons.OrderStatus;
 import com.ra.project.model.dto.request.CategoryRequest;
 import com.ra.project.model.dto.request.ProductRequest;
-import com.ra.project.model.entity.Category;
-import com.ra.project.model.entity.Product;
-import com.ra.project.model.entity.Role;
-import com.ra.project.model.entity.User;
-import com.ra.project.repository.CategoryRepository;
-import com.ra.project.repository.ProductRepository;
-import com.ra.project.repository.RoleRepository;
-import com.ra.project.repository.UserRepository;
+import com.ra.project.model.entity.*;
+import com.ra.project.repository.*;
 import com.ra.project.service.AdminService;
 import com.ra.project.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,6 +25,8 @@ public class AdminServiceImpl implements AdminService {
     private final RoleRepository roleRepository;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     @Override
     public Page<User> getUserWithPagingAndSorting(Integer page, Integer size, String orderBy, String direction) {
         Pageable pageable = null;
@@ -168,5 +167,43 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteCategory(Long categoryId) {
         categoryRepository.deleteById(categoryId);
+    }
+
+    @Override
+    public List<Orders> getOrders() {
+        return (List<Orders>) orderRepository.findAll();
+    }
+
+    @Override
+    public List<Orders> getOrdersByStatus(String status) {
+        return switch (status.toUpperCase().trim()) {
+            case "WAITING" -> orderRepository.getOrdersByStatus(OrderStatus.WAITING);
+            case "CONFIRM" -> orderRepository.getOrdersByStatus(OrderStatus.CONFIRM);
+            case "DELIVERY" -> orderRepository.getOrdersByStatus(OrderStatus.DELIVERY);
+            case "SUCCESS" -> orderRepository.getOrdersByStatus(OrderStatus.SUCCESS);
+            case "CANCEL" -> orderRepository.getOrdersByStatus(OrderStatus.CANCEL);
+            case "DENIED" -> orderRepository.getOrdersByStatus(OrderStatus.DENIED);
+            default -> List.of();
+        };
+    }
+
+    @Override
+    public List<OrderDetail> getOrderDetails(Long orderId) {
+        return orderDetailRepository.getOrderDetailsByOrderId(orderId);
+    }
+
+    @Override
+    public Orders changeOrderStatus(Long orderId, String status) {
+        Orders order = orderRepository.findById(orderId).orElseThrow(()->new NoSuchElementException("Order not found"));
+        switch (status.toUpperCase().trim()) {
+            case "WAITING" -> order.setStatus(OrderStatus.WAITING);
+            case "CONFIRM" -> order.setStatus(OrderStatus.CONFIRM);
+            case "DELIVERY" -> order.setStatus(OrderStatus.DELIVERY);
+            case "SUCCESS" -> order.setStatus(OrderStatus.SUCCESS);
+            case "CANCEL" -> order.setStatus(OrderStatus.CANCEL);
+            case "DENIED" -> order.setStatus(OrderStatus.DENIED);
+            default -> throw new NoSuchElementException("Status not valid");
+        }
+       return orderRepository.save(order);
     }
 }
