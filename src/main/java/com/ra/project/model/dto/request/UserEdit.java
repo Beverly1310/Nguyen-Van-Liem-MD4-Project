@@ -1,8 +1,6 @@
 package com.ra.project.model.dto.request;
 
-import com.ra.project.model.entity.Role;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -11,21 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class FormSignUp {
-
-    @Column(name = "username",length = 100)
-    @Pattern(regexp = "^(?!.*[^\\w]).{6,100}$", message = "Username not valid")
-    private String username;
-    private String password;
+public class UserEdit {
     @Column(name = "fullname",length = 100)
     @NotBlank
     @NotEmpty
@@ -38,11 +28,6 @@ public class FormSignUp {
     private String phone;
     private String avatar;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createdAt=new Date();
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt=new Date();
-    @Column(name = "is_delete")
-    private Boolean isDeleted=false;
-    private String address;
-    private Set<Role> roles;
+
 }

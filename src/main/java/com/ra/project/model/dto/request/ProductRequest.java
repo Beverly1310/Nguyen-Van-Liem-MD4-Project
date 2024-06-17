@@ -29,7 +29,7 @@ public class ProductRequest {
     private Double unitPrice;
     @Column(name = "stock_quantity")
     @Min(1)
-    private int stockQuantity;
+    private Long stockQuantity;
     @Column(name = "image")
     private String image;
     private Long categoryId;

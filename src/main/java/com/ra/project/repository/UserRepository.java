@@ -1,5 +1,7 @@
 package com.ra.project.repository;
 
+import com.ra.project.model.dto.request.ChangePasswordRequest;
+import com.ra.project.model.entity.Product;
 import com.ra.project.model.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long>, PagingAndSort
     @Query("SELECT u FROM User u")
     Page<User> getAll(Pageable pageable);
     List<User> findByFullNameContaining(String fullName);
+    @Query("select sc from ShoppingCart sc where sc.user.id = :id")
+    List<Product> getShoppingCart(Long id);
 }
