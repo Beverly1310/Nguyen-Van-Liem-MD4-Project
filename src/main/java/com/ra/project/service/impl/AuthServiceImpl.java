@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.security.auth.login.AccountException;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -45,13 +46,14 @@ public class AuthServiceImpl implements AuthService {
                 .email(formSignUp.getEmail())
                 .phone(formSignUp.getPhone())
                 .address(formSignUp.getAddress())
-                .password(formSignUp.getPassword())
+                .password(passwordEncoder.encode(formSignUp.getPassword()))
                 .fullName(formSignUp.getFullName())
                 .username(formSignUp.getUsername())
                 .avatar(formSignUp.getAvatar())
                 .createdAt(formSignUp.getCreatedAt())
                 .updatedAt(formSignUp.getUpdatedAt())
                 .isDeleted(formSignUp.getIsDeleted())
+                .status(true)
                 .build();
 //        if (file!=null && !file.isEmpty()) {
 //            user.setAvatar(file.getOriginalFilename());
@@ -59,10 +61,10 @@ public class AuthServiceImpl implements AuthService {
         Set<Role> roles = new HashSet<>();
         if (formSignUp.getRoles() != null && !formSignUp.getRoles().isEmpty()) {
             formSignUp.getRoles().forEach(role -> {
-                if (role.getRoleName().toString().equals("ADMIN")) {
-                    roles.add(roleRepository.findRoleByRoleName(role.getRoleName()).orElseThrow(() -> new NoSuchElementException("Role admin khong ton tai")));
-                } else if (role.getRoleName().toString().equals("USER")) {
-                    roles.add(roleRepository.findRoleByRoleName(role.getRoleName()).orElseThrow(() -> new NoSuchElementException("Role user khong ton tai")));
+                if (role.equals("ADMIN")) {
+                    roles.add(roleRepository.findRoleByRoleName(RoleName.ADMIN).orElseThrow(() -> new NoSuchElementException("Role admin khong ton tai")));
+                } else if (role.equals("USER")) {
+                    roles.add(roleRepository.findRoleByRoleName(RoleName.USER).orElseThrow(() -> new NoSuchElementException("Role user khong ton tai")));
                 }
             });
         } else {
@@ -80,6 +82,7 @@ public class AuthServiceImpl implements AuthService {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(formSignIn.getUsername(),formSignIn.getPassword()));
         }catch (AuthenticationException e){
             log.error("Sai username hoac password");
+            throw new RuntimeException("Username or password not correct");
         }
 
         CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();

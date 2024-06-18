@@ -1,5 +1,6 @@
 package com.ra.project.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ra.project.model.cons.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,7 +39,8 @@ public class Orders {
     @Column(name = "receive_phone", length = 15)
     private String receivePhone;
     @Column(name = "created_at", columnDefinition = "DATE")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-đ")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate createdAt=LocalDate.now();
     @Column(name = "received_at", columnDefinition = "DATE")
     private LocalDate receivedAt=createdAt.plusDays(4);

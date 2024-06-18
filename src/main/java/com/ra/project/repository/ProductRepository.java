@@ -15,6 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, PagingA
     @Query("select p from Product p where p.productName like concat('%',:productNameOrDescription,'%') or p.description like concat('%',:productNameOrDescription,'%')")
     List<Product> findProductByProductNameOrDescription(String productNameOrDescription);
 
+    Optional<Product> findProductByProductName(String productName);
+
     @Query("select p from Product p where p.id in(SELECT DISTINCT od.id.product.id FROM OrderDetail od)")
     Page<Product> getAllSale(Pageable pageable);
 
@@ -32,6 +34,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, PagingA
     List<Product> getProductByCategory_Id(Long category_id);
 
     Optional<Product> getProductById(Long id);
+
     @Query("select p from Product p ")
     Page<Product> getAll(Pageable pageable);
 }
