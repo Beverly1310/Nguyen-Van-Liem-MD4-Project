@@ -23,4 +23,8 @@ public interface AdminService {
     List<Orders> getOrdersByStatus(String status);
     List<OrderDetail> getOrderDetails(Long orderId);
     Orders changeOrderStatus(Long orderId,String status);
+    User addRoleForUser(Long userId, Long roleId);
+    void deleteRoleForUser(Long userId, Long roleId);
+    Double getSalesRevenueOverTime(String from, String to);
+
 }

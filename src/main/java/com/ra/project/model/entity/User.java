@@ -1,10 +1,12 @@
 package com.ra.project.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -30,7 +32,6 @@ public class User {
     private String fullName;
     @NotBlank
     @NotEmpty
-    @Email
     private String email;
     @Pattern(regexp = "^(03|05|07|08|09)\\d{8}$")
     private String phone;
@@ -39,13 +40,15 @@ public class User {
     @Column(name = "status")
     private Boolean status=true;
     @Column(name = "avatar")
-    private String avatar="https://bestnycacupuncturist.com/wp-content/uploads/2016/11/anonymous-avatar-sm.jpg";
+    private String avatar;
     @Column(name = "created_at")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createdAt=new Date();
+    @DateTimeFormat(pattern = "yyyy-MM-đ")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate createdAt= LocalDate.now();
     @Column(name = "updated_at")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updatedAt=new Date();
+    @DateTimeFormat(pattern = "yyyy-MM-đ")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate updatedAt=LocalDate.now();
     @Column(name = "is_delete")
     private Boolean isDeleted=false;
     @ManyToMany

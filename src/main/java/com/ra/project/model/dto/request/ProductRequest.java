@@ -1,6 +1,7 @@
 package com.ra.project.model.dto.request;
 
 import com.ra.project.model.entity.Category;
+import com.ra.project.validator.ProductNameExist;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -18,19 +19,14 @@ import java.util.UUID;
 @Builder
 public class ProductRequest {
     private Long id;
-    @Column(name = "product_name",length = 100)
-    @NotBlank
-    @NotEmpty
+    @NotBlank(message = "Product name is blank")
+    @NotEmpty(message = "Product name is empty")
+    @ProductNameExist
     private String productName;
-    @Column(name = "description")
-    @Lob
     private String description;
-    @Column(name = "unit_price", columnDefinition = "DECIMAL(10,2)")
     private Double unitPrice;
-    @Column(name = "stock_quantity")
-    @Min(1)
+    @Min(value = 1,message = "Stock must greater than 1")
     private Long stockQuantity;
-    @Column(name = "image")
-    private String image;
+    private String image="https://gebelesebeti.ge/front/asset/img/default-product.png";
     private Long categoryId;
 }

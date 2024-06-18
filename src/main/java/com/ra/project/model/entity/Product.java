@@ -1,5 +1,6 @@
 package com.ra.project.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -37,11 +39,13 @@ public class Product {
     @Column(name = "image")
     private String image;
     @Column(name = "created_at", columnDefinition = "DATE")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createdAt=new Date();
+    @DateTimeFormat(pattern = "yyyy-MM-đ")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate createdAt=LocalDate.now();
     @Column(name = "updated_at", columnDefinition = "DATE")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updatedAt=new Date();
+    @DateTimeFormat(pattern = "yyyy-MM-đ")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate updatedAt=LocalDate.now();
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "category_id")
     private Category category;

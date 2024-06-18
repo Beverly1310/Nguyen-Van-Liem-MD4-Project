@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long>, PagingAndSort
     List<User> findByFullNameContaining(String fullName);
     @Query("select sc from ShoppingCart sc where sc.user.id = :id")
     List<Product> getShoppingCart(Long id);
+    @Query("SELECT u FROM User u")
+    List<User> getAll();
 }

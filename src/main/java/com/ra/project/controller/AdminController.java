@@ -30,7 +30,7 @@ public class AdminController {
         return new ResponseEntity<>(new ResponseData<>("success", users, HttpStatus.OK), HttpStatus.OK);
     }
 
-    @PostMapping("/users/{userId}")
+    @PutMapping("/users/{userId}")
     public ResponseEntity<ResponseData<User>> changeStatus(@PathVariable("userId") Long userId) {
         User user = adminService.changStatus(userId);
         return new ResponseEntity<>(new ResponseData<>("success", user, HttpStatus.OK), HttpStatus.OK);
@@ -63,13 +63,13 @@ public class AdminController {
         return new ResponseEntity<>(new ResponseData<>("success", product, HttpStatus.OK), HttpStatus.OK);
     }
 
-    @PutMapping("/products")
+    @PostMapping("/products")
     public ResponseEntity<ResponseData<Product>> addProduct(@RequestBody ProductRequest productRequest) {
         Product product = adminService.addOrEditProduct(productRequest, null);
         return new ResponseEntity<>(new ResponseData<>("success", product, HttpStatus.OK), HttpStatus.OK);
     }
 
-    @PostMapping("/products/{productId}")
+    @PutMapping("/products/{productId}")
     public ResponseEntity<ResponseData<Product>> editProduct(@RequestBody ProductRequest productRequest, @PathVariable("productId") Long productId) {
         Product product = adminService.addOrEditProduct(productRequest, productId);
         return new ResponseEntity<>(new ResponseData<>("success", product, HttpStatus.OK), HttpStatus.OK);
@@ -96,7 +96,7 @@ public class AdminController {
         return new ResponseEntity<>(new ResponseData<>("success", category, HttpStatus.OK), HttpStatus.OK);
     }
 
-    @PutMapping("/categories")
+    @PostMapping("/categories")
     public ResponseEntity<ResponseData<Category>> addCategory(@RequestBody CategoryRequest categoryRequest) {
         Category category = adminService.addOrEditCategory(categoryRequest, null);
         return new ResponseEntity<>(new ResponseData<>("success", category, HttpStatus.OK), HttpStatus.OK);
@@ -108,7 +108,7 @@ public class AdminController {
         return new ResponseEntity<>(new ResponseData<>("success", category, HttpStatus.OK), HttpStatus.OK);
     }
 
-    @PostMapping("/categories/{categoryId}")
+    @DeleteMapping("/categories/{categoryId}")
     public ResponseEntity<?> deleteCategory(@PathVariable("categoryId") Long categoryId) {
         adminService.deleteCategory(categoryId);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -132,9 +132,24 @@ public class AdminController {
         return new ResponseEntity<>(new ResponseData<>("success", orderDetails, HttpStatus.OK), HttpStatus.OK);
     }
 
-    @PostMapping("/orders/{orderId}/status")
+    @PutMapping("/orders/{orderId}/status")
     public ResponseEntity<ResponseData<Orders>> changeOrderStatus(@PathVariable("orderId") Long orderId, @RequestParam("status") String status) {
         Orders order = adminService.changeOrderStatus(orderId, status);
         return new ResponseEntity<>(new ResponseData<>("success", order, HttpStatus.OK), HttpStatus.OK);
+    }
+    @PutMapping("/users/{userId}/role/{roleId}")
+    public ResponseEntity<ResponseData<User>> addRoleForUser(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+       User user = adminService.addRoleForUser(userId,roleId);
+       return new ResponseEntity<>(new ResponseData<>("success",user,HttpStatus.OK), HttpStatus.OK);
+    }
+    @DeleteMapping("/users/{userId}/role/{roleId}")
+    public ResponseEntity<?> deleteRoleForUser(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+        adminService.deleteRoleForUser(userId,roleId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/sales-revenue-over-time")
+    public ResponseEntity<ResponseData<String>> getSalesRevenueOverTime(@RequestParam("from") String from,@RequestParam("to") String to) {
+          String result = "Doanh thu từ " + from + " đến " + to +" là : "+adminService.getSalesRevenueOverTime(from,to);
+          return new ResponseEntity<>(new ResponseData<>("success", result, HttpStatus.OK), HttpStatus.OK);
     }
 }
